@@ -1,10 +1,10 @@
-# 💊 LineBot 藥物衛教與用藥提醒系統
+# 💊 DRUGUSE LINEBOT 藥品小幫手
 
 這是一個整合 **LINE Messaging API**、**Google Gemini AI**、**Google Maps API** 與 **SQLite** 的聊天機器人，用於提供：
 
 - ✅ 用藥提醒設定與自動推播
-- 🧠 藥品衛教查詢與 AI 問答
-- 📷 圖片藥品辨識
+- 🧠 藥品查詢(名稱、適應症、副作用)
+- 📷 圖片藥品辨識(名稱、適應症、副作用)
 - 🏥 附近藥局查詢（含地圖與電話）
 
 ---
@@ -14,11 +14,11 @@
 ```bash
 .
 ├── app.py              # 主程式
-├── linebot.db          # SQLite 資料庫
-├── /tmp/               # 圖片暫存目錄
-└── README.md
+├── linebot.db          # SQLite 資料庫（執行後產生）
+├── requirements.txt    # Python 套件清單
+├── Dockerfile          # Docker 容器設定
+└── README.md           # 專案說明文件
 ```
-
 ---
 
 ## ⚙️ 安裝方式
@@ -30,7 +30,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. 設定環境變數（可用 `.env` 或於部署平台設定）：
+2. 設定環境變數：
 
 | 變數名稱                  | 說明                                 |
 |---------------------------|--------------------------------------|
@@ -38,14 +38,13 @@ pip install -r requirements.txt
 | `YOUR_CHANNEL_ACCESS_TOKEN` | LINE Bot Access Token             |
 | `GOOGLE_API_KEY`          | Google Gemini API 金鑰               |
 | `GOOGLE_MAP_API_KEY`      | Google Maps API 金鑰（查詢藥局）     |
-| `HF_SPACE_URL`（選填）    | 基底網址，用於圖片暫存存取組合等用途 |
 
 3. 啟動伺服器
 ```bash
 python app.py
 ```
 
-預設會開在 `http://localhost:7860/`。
+預設會開在 `https://kyle9574-linebot.hf.space/callback`。
 
 ---
 
@@ -55,7 +54,6 @@ python app.py
 |------------------|----------------------------------------------------------------------|
 | `用藥提醒`       | 啟動互動式提醒設定流程                                               |
 | `修改用藥提醒`   | 顯示已有提醒並可修改開始/結束日與時間                              |
-| `AI XXX`         | Gemini 模型產生繁體中文衛教回答                                     |
 | `查詢藥品`       | 輸入藥品名稱或點選查詢功能，回覆藥名、適應症、副作用                |
 | `圖片查詢`       | 上傳藥品圖片，由 Gemini 模型辨識與補充資訊                          |
 | `查詢藥局`       | 傳送位置，回傳附近藥局（名稱、地址、距離、導航按鈕）               |
@@ -114,8 +112,7 @@ python app.py
 
 ## ⚠️ 注意事項
 
-- 本專案使用 Gemini 模型回覆衛教內容，**不具診斷或處方建議效力**
+- 本專案使用 Gemini 模型回覆藥品內容，**不具診斷或處方建議效力**
 - 用藥資料僅限參考，建議用戶仍以藥師或官方醫療資訊為準
-- 本版本未包含資料備份至 Hugging Face Repo 的功能（如需請手動整合）
 
 ---
